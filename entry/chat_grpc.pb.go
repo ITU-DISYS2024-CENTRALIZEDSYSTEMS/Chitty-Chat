@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: chat.proto
+// source: entry/chat.proto
 
 package entry
 
@@ -19,103 +19,103 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HelloWorldService_SayHello_FullMethodName = "/entry.HelloWorldService/SayHello"
+	BroadcastService_Broadcast_FullMethodName = "/entry.BroadcastService/broadcast"
 )
 
-// HelloWorldServiceClient is the client API for HelloWorldService service.
+// BroadcastServiceClient is the client API for BroadcastService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type HelloWorldServiceClient interface {
-	SayHello(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error)
+type BroadcastServiceClient interface {
+	Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error)
 }
 
-type helloWorldServiceClient struct {
+type broadcastServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewHelloWorldServiceClient(cc grpc.ClientConnInterface) HelloWorldServiceClient {
-	return &helloWorldServiceClient{cc}
+func NewBroadcastServiceClient(cc grpc.ClientConnInterface) BroadcastServiceClient {
+	return &broadcastServiceClient{cc}
 }
 
-func (c *helloWorldServiceClient) SayHello(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error) {
+func (c *broadcastServiceClient) Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HelloWorldResponse)
-	err := c.cc.Invoke(ctx, HelloWorldService_SayHello_FullMethodName, in, out, cOpts...)
+	out := new(BroadcastResponse)
+	err := c.cc.Invoke(ctx, BroadcastService_Broadcast_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// HelloWorldServiceServer is the server API for HelloWorldService service.
-// All implementations must embed UnimplementedHelloWorldServiceServer
+// BroadcastServiceServer is the server API for BroadcastService service.
+// All implementations must embed UnimplementedBroadcastServiceServer
 // for forward compatibility.
-type HelloWorldServiceServer interface {
-	SayHello(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error)
-	mustEmbedUnimplementedHelloWorldServiceServer()
+type BroadcastServiceServer interface {
+	Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error)
+	mustEmbedUnimplementedBroadcastServiceServer()
 }
 
-// UnimplementedHelloWorldServiceServer must be embedded to have
+// UnimplementedBroadcastServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedHelloWorldServiceServer struct{}
+type UnimplementedBroadcastServiceServer struct{}
 
-func (UnimplementedHelloWorldServiceServer) SayHello(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (UnimplementedBroadcastServiceServer) Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Broadcast not implemented")
 }
-func (UnimplementedHelloWorldServiceServer) mustEmbedUnimplementedHelloWorldServiceServer() {}
-func (UnimplementedHelloWorldServiceServer) testEmbeddedByValue()                           {}
+func (UnimplementedBroadcastServiceServer) mustEmbedUnimplementedBroadcastServiceServer() {}
+func (UnimplementedBroadcastServiceServer) testEmbeddedByValue()                          {}
 
-// UnsafeHelloWorldServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HelloWorldServiceServer will
+// UnsafeBroadcastServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BroadcastServiceServer will
 // result in compilation errors.
-type UnsafeHelloWorldServiceServer interface {
-	mustEmbedUnimplementedHelloWorldServiceServer()
+type UnsafeBroadcastServiceServer interface {
+	mustEmbedUnimplementedBroadcastServiceServer()
 }
 
-func RegisterHelloWorldServiceServer(s grpc.ServiceRegistrar, srv HelloWorldServiceServer) {
-	// If the following call pancis, it indicates UnimplementedHelloWorldServiceServer was
+func RegisterBroadcastServiceServer(s grpc.ServiceRegistrar, srv BroadcastServiceServer) {
+	// If the following call pancis, it indicates UnimplementedBroadcastServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&HelloWorldService_ServiceDesc, srv)
+	s.RegisterService(&BroadcastService_ServiceDesc, srv)
 }
 
-func _HelloWorldService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloWorldRequest)
+func _BroadcastService_Broadcast_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BroadcastRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HelloWorldServiceServer).SayHello(ctx, in)
+		return srv.(BroadcastServiceServer).Broadcast(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: HelloWorldService_SayHello_FullMethodName,
+		FullMethod: BroadcastService_Broadcast_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HelloWorldServiceServer).SayHello(ctx, req.(*HelloWorldRequest))
+		return srv.(BroadcastServiceServer).Broadcast(ctx, req.(*BroadcastRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// HelloWorldService_ServiceDesc is the grpc.ServiceDesc for HelloWorldService service.
+// BroadcastService_ServiceDesc is the grpc.ServiceDesc for BroadcastService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var HelloWorldService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "entry.HelloWorldService",
-	HandlerType: (*HelloWorldServiceServer)(nil),
+var BroadcastService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "entry.BroadcastService",
+	HandlerType: (*BroadcastServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _HelloWorldService_SayHello_Handler,
+			MethodName: "broadcast",
+			Handler:    _BroadcastService_Broadcast_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "chat.proto",
+	Metadata: "entry/chat.proto",
 }

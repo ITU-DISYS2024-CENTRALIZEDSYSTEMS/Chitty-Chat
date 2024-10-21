@@ -9,11 +9,12 @@ import (
 )
 
 type server struct {
- pb.UnimplementedHelloWorldServiceServer
+ pb.UnimplementedBroadcastServiceServer
 }
 
-func (s *server) SayHello(ctx context.Context, in *pb.HelloWorldRequest) (*pb.HelloWorldResponse, error) {
- return &pb.HelloWorldResponse{Message: "Hello, World! "}, nil
+
+func (s *server) Broadcast(ctx context.Context, in *pb.BroadcastRequest) (*pb.BroadcastResponse, error) {
+	return &pb.BroadcastResponse{Message: in.Message}, nil
 }
 
 func main() {
@@ -23,8 +24,9 @@ func main() {
  }
 
  s := grpc.NewServer()
- pb.RegisterHelloWorldServiceServer(s, &server{})
+ pb.RegisterBroadcastServiceServer(s, &server{})
  log.Printf("gRPC server listening at %v", lis.Addr())
+
  if err := s.Serve(lis); err != nil {
   log.Fatalf("failed to serve: %v", err)
  }

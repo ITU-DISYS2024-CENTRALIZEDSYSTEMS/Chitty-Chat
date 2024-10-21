@@ -10,17 +10,18 @@ import (
 )
 
 func main() {
- conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+ conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
  if err != nil {
   log.Fatalf("failed to connect to gRPC server at localhost:50051: %v", err)
  }
  defer conn.Close()
- c := pb.NewHelloWorldServiceClient(conn)
+ c := pb.NewBroadcastServiceClient(conn)
 
  ctx, cancel := context.WithTimeout(context.Background(), time.Second)
  defer cancel()
+ 
 
- r, err := c.SayHello(ctx, &pb.HelloWorldRequest{})
+ r, err := c.Broadcast(ctx, &pb.BroadcastRequest{Message: "Hello from gRPC client!"})
  if err != nil {
   log.Fatalf("error calling function SayHello: %v", err)
  }

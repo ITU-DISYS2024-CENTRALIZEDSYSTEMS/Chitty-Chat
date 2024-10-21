@@ -4,12 +4,18 @@ option go_package = "github.com/jgjo/grpc-go/entry";
 
 package entry;
 
-service HelloWorldService {
-  rpc SayHello(HelloWorldRequest) returns (HelloWorldResponse) {}
+service BroadcastService {
+  rpc broadcast(BroadcastRequest) returns (BroadcastResponse) {}
 }
 
-message HelloWorldRequest {}
-
-message HelloWorldResponse {
+message BroadcastRequest {
   string message = 1;
+  string user = 2;
+  int32 timestamp = 3;
+}
+
+message BroadcastResponse {
+  string message = 1;
+  string user = 2;
+  int32 timestamp = 3;
 }
