@@ -45,8 +45,6 @@ The \verb|Message| type is the message type used for communication. It contains 
 \end{itemize} 
 
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
-
-\subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
 Both the server and the client have a \verb|Lamport| clock initilized on start, that is set to \verb|0|. This is also the case for newcomers that connect to the server. 
 The \verb|Lamport| clock is handled with these conditions:\\
 \textbf{Client:}
@@ -61,6 +59,7 @@ The \verb|Lamport| clock is handled with these conditions:\\
     \item If a client disconnectes from the server, \verb|Lamport| clock is incremented by \verb|1| - Then the server will broadcast the disconnection.
     \item If a client connects to the server, \verb|Lamport| clock is incremented by \verb|1|- Then the server will broadcast the disconnection.
 \end{itemize}
+
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps}
 \includegraphics[width=\textwidth]{chat.png}
 Server   - Starting
