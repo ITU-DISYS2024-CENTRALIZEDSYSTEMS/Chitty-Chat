@@ -2,13 +2,22 @@
 
 \documentclass[a4paper,11pt]{article}
 \usepackage{hyperref}
-
+\usepackage{enumitem}
+\usepackage{varwidth}
+\usepackage{tasks}
 % Import packages
 \usepackage[a4paper]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{enumerate}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
 
 \usepackage{graphicx}
 
@@ -20,7 +29,7 @@
 
 % Set title, author name and date
 \title{Chitty-Chat}
-\author{Johannes Jørgensen, Kevin Skovgaard Gravesen} 
+\author{Johannes Jørgensen (jgjo),\\ Kevin Skovgaard Gravesen (kegr),\\ Joakim Andreasen (joaan)} 
 \date{\today}
 
 \begin{document} 
@@ -53,7 +62,7 @@ The \verb|Message| type is the message type used for communication. It contains 
     \item \verb|username|: The username of the sender
     \item \verb|content|: The content of the message
 \end{itemize} 
-
+\newpage
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
 Both the server and the client have a \verb|Lamport| clock initilized on start, that is set to \verb|0|. This is also the case for newcomers that connect to the server. 
 The \verb|Lamport| clock is handled with these conditions:\\
@@ -72,16 +81,20 @@ The \verb|Lamport| clock is handled with these conditions:\\
 
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps}
 \includegraphics[width=\textwidth]{chat.png}
+\begin{center}
+\begin{varwidth}{\textwidth}
 \begin{enumerate}
-        \setlength{\itemsep}{1pt}
-        \setlength{\parskip}{0pt}
-        \item[1 - \textbf{Server \;}]Starting
-        \item[2 - \textbf{Client 1}] Joined the conversation
-        \item[3 - \textbf{Client 2}] Joined the conversation
-        \item[4 - \textbf{Client 1}] Sends a message
-        \item[5 - \textbf{Client 2}] Leaves the conversation
-    \end{enumerate}
-
+    \setlength{\itemsep}{1pt}
+    \setlength{\parskip}{0pt}
+    \item[1 - \textbf{Server \;}] Starting
+    \item[2 - \textbf{Client 1}] Joined the conversation
+    \item[3 - \textbf{Client 2}] Joined the conversation
+    \item[4 - \textbf{Client 1}] Sends a message
+    \item[5 - \textbf{Client 2}] Leaves the conversation
+\end{enumerate}
+\end{varwidth}
+\end{center}
+\newpage
 \subsection*{Git}
 \href{https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat}{Github}
 
