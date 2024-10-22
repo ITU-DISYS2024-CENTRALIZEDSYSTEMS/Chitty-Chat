@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "Gen/";
+package ChittyChat;
+
+service ChittyChat {
+
+    rpc JoinConversation(stream Message) returns (stream Message);
+
+}
+
+message User{
+    string name = 1;
+    string timeStampCreation = 2;
+}
+
+message Message{
+    User user = 1;
+    string message = 2;
+    string timeStamp = 3;
+}
+
+
