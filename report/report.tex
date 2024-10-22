@@ -12,44 +12,21 @@
 \renewcommand{\theenumi}{\alph{enumi}}
 
 % Set title, author name and date
-\title{Peergrade assignment 1}
-\author{} % Do not include your name, as Peergrading is anonymous 
+\title{Chitty-Chat}
+\author{Johannes Jørgensen,} 
 \date{\today}
 
 \begin{document} 
 
 \maketitle
 
-\section*{Exercise 1.3.14}
-
-This is my solution to the first exercise. I can write mathematical expressions inline, e.g.~$p \land q$, or I can write them on separate lines
-\begin{equation}
-  \label{eq:1}
-  (p \lor q) \land (\lnot p \lor r) \rightarrow (q \lor r) .
-\end{equation}
-I can refer to equations in the text, e.g.~equation~\eqref{eq:1}, but I can also have equations without number, such as
-\begin{equation*}
-  P(A | B) = \frac{P(B | A) P(A)}{P(B)} ,
-\end{equation*}
-for $P(B) > 0$.
-\section*{Exercise 1.4.20}
-For a short document like this, it looks best not to have numbers on my section titles. I can do this using \verb+\section*+. However, if I am writing a longer report I might have numbered section using \verb+\section+.
-
-\begin{enumerate}
-\item This is my solution to question a.
-\item This is my solution to question b.
-\item This is my solution to question c.
-\item This is my solution to question d.
-\item This is my solution to question e.
-\end{enumerate}
-
-\section*{Exercise 1.5.10}
-
-\begin{enumerate}
-\item This is my solution to question a.
-\item This is my solution to question b.
-\item This is my solution to question c.
-\item This is my solution to question d.
-\end{enumerate}
+\subsection*{Discuss, whether you are going to use server-side streaming, client-side streaming, or bidirectional streaming?}
+\subsection*{Describe your system architecture - do you have a server-client architecture, peer-to-peer, or something else?}
+\subsection*{Describe what  RPC methods are implemented, of what type, and what messages types are used for communication}
+\subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
+\subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
+\subsection*{Provide a link to a Git repo with your source code in the report}
+\subsection*{Include system logs, that document the requirements are met, in the appendix of your report}
+\subsection*{Include a readme.md file that describes how to run your program.}
 
 \end{document}
