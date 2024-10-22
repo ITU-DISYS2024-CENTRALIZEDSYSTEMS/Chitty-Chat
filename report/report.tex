@@ -1,13 +1,18 @@
 % report.tex
 
 \documentclass[a4paper,11pt]{article}
+\usepackage{hyperref}
 
 % Import packages
 \usepackage[a4paper]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{enumerate}
+
 \usepackage{graphicx}
+
+\usepackage{listings}
 
 
 % Change enumerate environments you use letters
@@ -21,6 +26,10 @@
 \begin{document} 
 
 \maketitle
+
+\subsection*{Introduction}
+Chitty-Chat is a chat-service that allows users (devices) to communicate via text based messaged through a server. The program is created in the goland programming language with the use of GRPC.
+The program uses the command line interface, that allows the users to write and read between all users connected to the server.
 
 \subsection*{Streaming in Chitty-Chat}
 This version of Chitty-Chat is implemented using bidirectional streaming. Which allows for messages to be sent over a single stream.
@@ -63,18 +72,23 @@ The \verb|Lamport| clock is handled with these conditions:\\
 
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps}
 \includegraphics[width=\textwidth]{chat.png}
-Server   - Starting
-Client 1 - Joined the conversation
-Client 2 - Joined the conversation
-Client 1 - Sends a message
-Client 2 - Leaves the conversation
+\begin{enumerate}
+        \setlength{\itemsep}{1pt}
+        \setlength{\parskip}{0pt}
+        \item[1 - \textbf{Server \;}]Starting
+        \item[2 - \textbf{Client 1}] Joined the conversation
+        \item[3 - \textbf{Client 2}] Joined the conversation
+        \item[4 - \textbf{Client 1}] Sends a message
+        \item[5 - \textbf{Client 2}] Leaves the conversation
+    \end{enumerate}
 
 \subsection*{Git}
-[GitHub](https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat)
+\href{https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat}{Github}
 
 \subsection*{Appendix}
 
 \subsubsection*{Lamport logs}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 Server:
 2024/10/22 14:32:31 Info | Client 1 | Joined Chitty-Chat | Lamport time 2
 2024/10/22 14:32:31 Broadcasting | Client 1 | joined Chitty-Chat | Lamport time 3
@@ -94,8 +108,10 @@ Client 1:
 Client 2:
 2024/10/22 14:32:42 Client 2 | joined Chitty-Chat | Lamport time 6
 2024/10/22 14:32:58 Client 1 | Hello world! | Lamport time 10
+\end{lstlisting}
 
 \subsubsection*{Chitty-Chat demo: 5 clients}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 Server:
 2024/10/22 14:41:28 Info | Client 1 | Joined Chitty-Chat | Lamport time 2
 2024/10/22 14:41:28 Broadcasting | Client 1 | joined Chitty-Chat | Lamport time 3
@@ -167,4 +183,5 @@ Client 5:
 2024/10/22 14:43:12 Client 4 | Hello world from 4 | Lamport time 24
 2024/10/22 14:43:16 Client 5 | Hello world from 5 | Lamport time 28
 2024/10/22 14:43:29 Client 2 | Hello world from 2! | Lamport time 32
+\end{lstlisting}
 \end{document}
