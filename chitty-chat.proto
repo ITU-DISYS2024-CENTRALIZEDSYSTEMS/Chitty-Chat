@@ -2,17 +2,11 @@ syntax = "proto3";
 option go_package = "./chitty-chat";
 
 service ChittyChat {
-  rpc PublishMessage (TextMessage) returns (TextMessage);
-  rpc JoinConversation (Message) returns (Message);
-  rpc LeaveConversation (Message) returns (Message);
+  rpc JoinConversation (stream Message) returns (stream Message);
 }
 
 message Message {
   string author = 1;
+  string content = 2;
   int32 timestamp = 3;
-}
-
-message TextMessage {
-  Message message = 1;
-  string text = 2;
 }
