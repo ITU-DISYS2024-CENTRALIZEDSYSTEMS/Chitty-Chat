@@ -20,7 +20,14 @@
 
 \maketitle
 
-\subsection*{Discuss, whether you are going to use server-side streaming, client-side streaming, or bidirectional streaming?}
+\subsection*{Streaming in Chitty-Chat}
+This version of Chitty-Chat is implemented using bidirectional streaming. Which allows for messages to be sent over a single stream.
+Every message include the author who send said message. When a message goes from the client only the id is sent, but is changed to the name when the server broadcasts.
+
+Chitty-Chat could also be implemented using server-side streaming with an publish endpoint.
+A client could then subscribe to the message stream, where the server will send (broadcast) the published messages.
+Another service endpoint would then be used to publish the messages.
+This would also allow for different Author signup and TextMessage types in the proto file, where the first text message currently is handled as is if it were an author.
 
 \subsection*{Describe your system architecture - do you have a server-client architecture, peer-to-peer, or something else?}
 \subsection*{Describe what  RPC methods are implemented, of what type, and what messages types are used for communication}
@@ -31,10 +38,14 @@ The \verb|Message| type is the message type used for communication. It contains 
     \item \verb|username|: The username of the sender
     \item \verb|content|: The content of the message
 \end{itemize} 
+
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
+
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
-\subsection*{Provide a link to a Git repo with your source code in the report}
-\subsection*{Include system logs, that document the requirements are met, in the appendix of your report}
-\subsection*{Include a readme.md file that describes how to run your program.}
+
+\subsection*{Git}
+[GitHub](https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat)
+
+\subsection*{Appendix}
 
 \end{document}
