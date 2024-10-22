@@ -7,6 +7,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{enumerate}
+
 \usepackage{graphicx}
 
 
@@ -63,11 +65,15 @@ The \verb|Lamport| clock is handled with these conditions:\\
 
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps}
 \includegraphics[width=\textwidth]{chat.png}
-Server   - Starting
-Client 1 - Joined the conversation
-Client 2 - Joined the conversation
-Client 1 - Sends a message
-Client 2 - Leaves the conversation
+\begin{enumerate}
+        \setlength{\itemsep}{1pt}
+        \setlength{\parskip}{0pt}
+        \item[1 - \textbf{Server \;}]Starting
+        \item[2 - \textbf{Client 1}] Joined the conversation
+        \item[3 - \textbf{Client 2}] Joined the conversation
+        \item[4 - \textbf{Client 1}] Sends a message
+        \item[5 - \textbf{Client 2}] Leaves the conversation
+    \end{enumerate}
 
 \subsection*{Git}
 [GitHub](https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat)
