@@ -7,6 +7,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
+
 
 % Change enumerate environments you use letters
 \renewcommand{\theenumi}{\alph{enumi}}
@@ -41,11 +43,29 @@ The \verb|Message| type is the message type used for communication. It contains 
 
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
 
+Both the server and the client have a \verb|Lamport| clock initilized on start, that is set to \verb|0|. This is also the case for newcomers that connect to the server. 
+The \verb|Lamport| clock is handled with these conditions:\\
+\textbf{Client:}
+\begin{itemize}
+    \item When a client sends a message, the \verb|Lamport| clock is incremented by \verb|1|.
+    \item When a client receives a message, the \verb|Lamport| clock is incremented by \verb|1| if the timestamp of the received message is greater than the current \verb|Lamport| clock.
+\end{itemize}
+\textbf{Server:}
+\begin{itemize}
+    \item When the server receives a message, the \verb|Lamport| clock is incremented by \verb|1| if the timestamp of the received message is greater than the current \verb|Lamport| clock.
+    \item When the server broadcasts a message, the \verb|Lamport| will be incremented by \verb|1|.
+    \item If a client disconnectes from the server, \verb|Lamport| clock is incremented by \verb|1| - Then the server will broadcast the disconnection.
+    \item If a client connects to the server, \verb|Lamport| clock is incremented by \verb|1|- Then the server will broadcast the disconnection.
+\end{itemize}
+\subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps}
+\includegraphics[width=\textwidth]{chat.png}
+
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
 
 \subsection*{Git}
 [GitHub](https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat)
 
 \subsection*{Appendix}
+
 
 \end{document}
