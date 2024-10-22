@@ -21,8 +21,16 @@
 \maketitle
 
 \subsection*{Discuss, whether you are going to use server-side streaming, client-side streaming, or bidirectional streaming?}
+
 \subsection*{Describe your system architecture - do you have a server-client architecture, peer-to-peer, or something else?}
 \subsection*{Describe what  RPC methods are implemented, of what type, and what messages types are used for communication}
+We have implemented a single RPC method called \verb|JoinConversation| that both takes and return a \textit{stream} of type \verb|Message|.
+The \verb|Message| type is the message type used for communication. It contains the fields:
+\begin{itemize}
+    \item \verb|timestamp|: A Lamport timestamp
+    \item \verb|username|: The username of the sender
+    \item \verb|content|: The content of the message
+\end{itemize} 
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
 \subsection*{Provide a link to a Git repo with your source code in the report}
