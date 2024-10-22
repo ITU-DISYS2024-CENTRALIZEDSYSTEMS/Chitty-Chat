@@ -30,7 +30,8 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 	for {
 		incomingMessage, err := stream.Recv()
 		if err != nil {
-			log.Println("Info |", author.name, "| Dropped the connection!")
+			s.lamport++
+			log.Println("Info |", author.name, "| Dropped the connection! | Lamport time", s.lamport)
 			break
 		}
 
@@ -50,7 +51,7 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 			}
 			s.mu.Unlock()
 
-			log.Println("Info |", author.name, "| Joined Chitty-Chat | lamport time", s.lamport)
+			log.Println("Info |", author.name, "| Joined Chitty-Chat | Lamport time", s.lamport)
 			s.broadcastMessage(&chitty_chat.Message{
 				Author: s.clients[author.id].name,
 				Content: "joined Chitty-Chat",
@@ -62,7 +63,7 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 		if len(incomingMessage.Content) <= 128 {
 			incomingMessage.Author = s.clients[incomingMessage.Author].name
 			incomingMessage.Timestamp = s.lamport
-			log.Println("Info |", author.name, "| Sent a message | lamport time", s.lamport)
+			log.Println("Info |", author.name, "| Sent a message | Lamport time", s.lamport)
 			s.broadcastMessage(incomingMessage)
 		} else {
 			log.Println("Info |", author.name, "| Tried to send a too big message!")
