@@ -1,6 +1,7 @@
 % report.tex
 
 \documentclass[a4paper,11pt]{article}
+\usepackage{hyperref}
 
 % Import packages
 \usepackage[a4paper]{geometry}
@@ -10,6 +11,8 @@
 \usepackage{enumerate}
 
 \usepackage{graphicx}
+
+\usepackage{listings}
 
 
 % Change enumerate environments you use letters
@@ -80,11 +83,12 @@ The \verb|Lamport| clock is handled with these conditions:\\
     \end{enumerate}
 
 \subsection*{Git}
-[GitHub](https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat)
+\href{https://github.com/ITU-DISYS2024-CENTRALIZEDSYSTEMS/Chitty-Chat}{Github}
 
 \subsection*{Appendix}
 
 \subsubsection*{Lamport logs}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 Server:
 2024/10/22 14:32:31 Info | Client 1 | Joined Chitty-Chat | Lamport time 2
 2024/10/22 14:32:31 Broadcasting | Client 1 | joined Chitty-Chat | Lamport time 3
@@ -104,5 +108,5 @@ Client 1:
 Client 2:
 2024/10/22 14:32:42 Client 2 | joined Chitty-Chat | Lamport time 6
 2024/10/22 14:32:58 Client 1 | Hello world! | Lamport time 10
-
+\end{lstlisting}
 \end{document}
