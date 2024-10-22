@@ -35,6 +35,7 @@ This would also allow for different Author signup and TextMessage types in the p
 We have implemented our Chitty-Chat program throught the server-client architecture. 
 This means that a server is launched and is only responsible for the communication between different clients. This means that the clients are only responsible for
 sending acceptable data from the client to the server.
+
 \subsection*{Describe what  RPC methods are implemented, of what type, and what messages types are used for communication}
 We have implemented a single RPC method called \verb|JoinConversation| that both takes and return a \textit{stream} of type \verb|Message|.
 The \verb|Message| type is the message type used for communication. It contains the fields:
@@ -73,5 +74,25 @@ Client 2 - Leaves the conversation
 
 \subsection*{Appendix}
 
+\subsubsection*{Lamport logs}
+Server:
+2024/10/22 14:32:31 Info | Client 1 | Joined Chitty-Chat | Lamport time 2
+2024/10/22 14:32:31 Broadcasting | Client 1 | joined Chitty-Chat | Lamport time 3
+2024/10/22 14:32:42 Info | Client 2 | Joined Chitty-Chat | Lamport time 4
+2024/10/22 14:32:42 Broadcasting | Client 2 | joined Chitty-Chat | Lamport time 5
+2024/10/22 14:32:58 Info | Client 1 | Sent a message | Lamport time 8
+2024/10/22 14:32:58 Broadcasting | Client 1 | Hello world! | Lamport time 9
+2024/10/22 14:33:00 Info | Client 2 | Dropped the connection! | Lamport time 10
+2024/10/22 14:33:00 Broadcasting | Client 2 | left Chitty-Chat | Lamport time 12
+
+Client 1:
+2024/10/22 14:32:31 Client 1 | joined Chitty-Chat | Lamport time 4
+2024/10/22 14:32:42 Client 2 | joined Chitty-Chat | Lamport time 6
+2024/10/22 14:32:58 Client 1 | Hello world! | Lamport time 10
+2024/10/22 14:33:00 Client 2 | left Chitty-Chat | Lamport time 13
+
+Client 2:
+2024/10/22 14:32:42 Client 2 | joined Chitty-Chat | Lamport time 6
+2024/10/22 14:32:58 Client 1 | Hello world! | Lamport time 10
 
 \end{document}
