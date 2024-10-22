@@ -5,16 +5,10 @@ option go_package = "github.com/jgjo/grpc-go/entry";
 package entry;
 
 service BroadcastService {
-  rpc broadcast(BroadcastRequest) returns (BroadcastResponse) {}
+  rpc broadcast(stream BroadcastMessage) returns (stream BroadcastMessage) {}
 }
 
-message BroadcastRequest {
-  string message = 1;
-  string user = 2;
-  int32 timestamp = 3;
-}
-
-message BroadcastResponse {
+message BroadcastMessage {
   string message = 1;
   string user = 2;
   int32 timestamp = 3;

@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BroadcastServiceClient interface {
-	Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error)
+	Broadcast(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BroadcastMessage, BroadcastMessage], error)
 }
 
 type broadcastServiceClient struct {
@@ -37,21 +37,24 @@ func NewBroadcastServiceClient(cc grpc.ClientConnInterface) BroadcastServiceClie
 	return &broadcastServiceClient{cc}
 }
 
-func (c *broadcastServiceClient) Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error) {
+func (c *broadcastServiceClient) Broadcast(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BroadcastMessage, BroadcastMessage], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(BroadcastResponse)
-	err := c.cc.Invoke(ctx, BroadcastService_Broadcast_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &BroadcastService_ServiceDesc.Streams[0], BroadcastService_Broadcast_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[BroadcastMessage, BroadcastMessage]{ClientStream: stream}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BroadcastService_BroadcastClient = grpc.BidiStreamingClient[BroadcastMessage, BroadcastMessage]
 
 // BroadcastServiceServer is the server API for BroadcastService service.
 // All implementations must embed UnimplementedBroadcastServiceServer
 // for forward compatibility.
 type BroadcastServiceServer interface {
-	Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error)
+	Broadcast(grpc.BidiStreamingServer[BroadcastMessage, BroadcastMessage]) error
 	mustEmbedUnimplementedBroadcastServiceServer()
 }
 
@@ -62,8 +65,8 @@ type BroadcastServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBroadcastServiceServer struct{}
 
-func (UnimplementedBroadcastServiceServer) Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Broadcast not implemented")
+func (UnimplementedBroadcastServiceServer) Broadcast(grpc.BidiStreamingServer[BroadcastMessage, BroadcastMessage]) error {
+	return status.Errorf(codes.Unimplemented, "method Broadcast not implemented")
 }
 func (UnimplementedBroadcastServiceServer) mustEmbedUnimplementedBroadcastServiceServer() {}
 func (UnimplementedBroadcastServiceServer) testEmbeddedByValue()                          {}
@@ -86,23 +89,12 @@ func RegisterBroadcastServiceServer(s grpc.ServiceRegistrar, srv BroadcastServic
 	s.RegisterService(&BroadcastService_ServiceDesc, srv)
 }
 
-func _BroadcastService_Broadcast_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BroadcastRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BroadcastServiceServer).Broadcast(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: BroadcastService_Broadcast_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BroadcastServiceServer).Broadcast(ctx, req.(*BroadcastRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+func _BroadcastService_Broadcast_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BroadcastServiceServer).Broadcast(&grpc.GenericServerStream[BroadcastMessage, BroadcastMessage]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type BroadcastService_BroadcastServer = grpc.BidiStreamingServer[BroadcastMessage, BroadcastMessage]
 
 // BroadcastService_ServiceDesc is the grpc.ServiceDesc for BroadcastService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -110,12 +102,14 @@ func _BroadcastService_Broadcast_Handler(srv interface{}, ctx context.Context, d
 var BroadcastService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "entry.BroadcastService",
 	HandlerType: (*BroadcastServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "broadcast",
-			Handler:    _BroadcastService_Broadcast_Handler,
+			StreamName:    "broadcast",
+			Handler:       _BroadcastService_Broadcast_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "entry/chat.proto",
 }
