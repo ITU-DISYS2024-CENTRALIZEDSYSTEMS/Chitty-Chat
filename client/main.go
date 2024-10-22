@@ -49,11 +49,15 @@ func sendMessage(stream grpc.BidiStreamingClient[chitty_chat.Message, chitty_cha
 }
 
 func main() {
-	var id string
-	var name string
-
-	fmt.Scan(&id)
-	fmt.Scan(&name)
+	input := bufio.NewScanner(os.Stdin)
+	
+	fmt.Println("Please input your id:")
+	input.Scan()
+	var id string = input.Text()
+	
+	fmt.Println("Please input your name:")
+	input.Scan()
+	var name string = input.Text()
 
 	grpcOptions := grpc.WithTransportCredentials(insecure.NewCredentials())
 	conn, err := grpc.NewClient(":8080", grpcOptions)
