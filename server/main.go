@@ -13,13 +13,12 @@ type server struct {
  pb.UnimplementedBroadcastServiceServer
  mu sync.Mutex
  clients map[string]pb.BroadcastService_BroadcastServer
+ time int32
 }
 
 
 
 func (s *server) Broadcast(srv pb.BroadcastService_BroadcastServer) error {
-    println("Broadcastint to all clients")
-    
     ctx := srv.Context()
     for{
         
@@ -49,24 +48,34 @@ func (s *server) Broadcast(srv pb.BroadcastService_BroadcastServer) error {
             s.clients[req.GetUser()] = srv
             log.Printf("User %s has joined", req.User)
             s.mu.Unlock()
+            continue
         }
 
         // if user leaves remove from clients
         defer func() {
             s.mu.Lock()
                 delete(s.clients, req.GetUser())
+                log.Printf("User %v has left", req.GetUser())
             s.mu.Unlock()
-            log.Println("User %v has left", req.GetUser())
         }()
 
+        // 
+        s.mu.Lock()
+        if(req.Timestamp > s.time){
+            s.time = req.Timestamp + 1
+        }else {
+            s.time++
+        }
+        s.mu.Unlock()
 
         // send message to all clients
+        log.Printf("Broadcasting message from | %v at time: %v", req.GetUser(), s.time)
         for user, client := range s.clients {
-            log.Printf("Broadcasting message from | %v", req.GetUser())
             if user != req.GetUser() {
                 if err := client.Send(&pb.BroadcastMessage{
                     User: req.User,
                     Message: req.Message,
+                    Timestamp: s.time,
                 }); err != nil {
                     log.Printf("send error %v", err)
                 }
@@ -81,6 +90,7 @@ func (s *server) Broadcast(srv pb.BroadcastService_BroadcastServer) error {
 func main() {
     server := &server{
         clients: make(map[string]pb.BroadcastService_BroadcastServer),
+        time: 0,
     }
     // create listener
 lis, err := net.Listen("tcp", ":50005")
