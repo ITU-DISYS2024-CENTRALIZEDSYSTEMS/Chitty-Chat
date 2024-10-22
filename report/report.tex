@@ -13,7 +13,7 @@
 
 % Set title, author name and date
 \title{Chitty-Chat}
-\author{Johannes Jørgensen,} 
+\author{Johannes Jørgensen, Kevin Skovgaard Gravesen} 
 \date{\today}
 
 \begin{document} 
@@ -22,9 +22,17 @@
 
 \subsection*{Discuss, whether you are going to use server-side streaming, client-side streaming, or bidirectional streaming?}
 \subsection*{Describe your system architecture - do you have a server-client architecture, peer-to-peer, or something else?}
+We have implemented our Chitty-Chat program throught the server-client architecture. 
+This means that a server is launched and is only responsible for the communication between different clients. This means that the clients are only responsible for
+sending acceptable data from the client to the server.
 \subsection*{Describe what  RPC methods are implemented, of what type, and what messages types are used for communication}
 \subsection*{Describe how you have implemented the calculation of the Lamport timestamps}
 \subsection*{Provide a diagram, that traces a sequence of RPC calls together with the Lamport timestamps, that corresponds to a chosen sequence of interactions: Client X joins, Client X Publishes, ..., Client X leaves. Include documentation (system logs) in your appendix.}
+Server   - Starting
+Client 1 - Joined the conversation
+Client 2 - Joined the conversation
+Client 1 - Sends a message
+Client 2 - Leaves the conversation
 \subsection*{Provide a link to a Git repo with your source code in the report}
 \subsection*{Include system logs, that document the requirements are met, in the appendix of your report}
 \subsection*{Include a readme.md file that describes how to run your program.}
