@@ -14,6 +14,9 @@ import (
 
 var lamport int32 = 0
 
+/* 
+* Repeatedly listens for messages streamed from the server. 
+*/
 func receiveMessage(stream grpc.BidiStreamingClient[chitty_chat.Message, chitty_chat.Message]) {
 	for {
 		incomingMessage, err := stream.Recv()
@@ -21,6 +24,7 @@ func receiveMessage(stream grpc.BidiStreamingClient[chitty_chat.Message, chitty_
 			log.Fatalln("Error receiving message:", err)
 		}
 
+		// Handle Lamport time client-side
 		if (incomingMessage.Timestamp > lamport) {
 			lamport = incomingMessage.Timestamp + 1
 		} else {
@@ -31,6 +35,9 @@ func receiveMessage(stream grpc.BidiStreamingClient[chitty_chat.Message, chitty_
 	}
 }
 
+/* 
+* Sends one or more messages to the server with stream.
+*/
 func sendMessage(stream grpc.BidiStreamingClient[chitty_chat.Message, chitty_chat.Message], id string) {	
 	for {
 		input := bufio.NewScanner(os.Stdin)

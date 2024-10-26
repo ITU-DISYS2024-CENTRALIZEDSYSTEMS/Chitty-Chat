@@ -16,31 +16,40 @@ type client struct {
 
 type chittyChatServer struct {
 	chitty_chat.UnimplementedChittyChatServer
-	clients map[string]client
+	clients map[string]client // Map to store name/connections of clients
 	lamport int32
-	mu sync.Mutex
+	mu sync.Mutex // Mutex lock
 }
 
+/*
+* Bidirectional streaming rpc via. streams
+*
+*/
 func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinConversationServer) error {
 	var author struct {
 		id string ""
 		name string ""
 	}
 
+	// listen for incoming messages
 	for {
 		incomingMessage, err := stream.Recv()
+
+		// On user disconnect
 		if err != nil {
 			s.lamport++
 			log.Println("Info |", author.name, "| Dropped the connection! | Lamport time", s.lamport)
 			break
 		}
 
+		// Update Lamport time
 		if (incomingMessage.Timestamp > s.lamport) {
 			s.lamport = incomingMessage.Timestamp + 1
 		} else {
 			s.lamport++
 		}
 
+		// Register new user - Check if user not in `clients` map
 		if author.id == "" {
 			author.id = incomingMessage.Author
 			author.name = incomingMessage.Content
@@ -51,6 +60,7 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 			}
 			s.mu.Unlock()
 
+			// Broadcast client joined
 			log.Println("Info |", author.name, "| Joined Chitty-Chat | Lamport time", s.lamport)
 			s.broadcastMessage(&chitty_chat.Message{
 				Author: s.clients[author.id].name,
@@ -60,6 +70,7 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 			continue
 		}
 
+		// Check if message is not too big (requirement)
 		if len(incomingMessage.Content) <= 128 {
 			incomingMessage.Author = s.clients[incomingMessage.Author].name
 			incomingMessage.Timestamp = s.lamport
@@ -72,6 +83,7 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 
 	s.lamport++
 
+	// Remove user from `clients` map - if user disconnected & broadcast it.
 	s.mu.Lock()
 	delete(s.clients, author.id)
 	s.mu.Unlock()
@@ -85,6 +97,9 @@ func (s *chittyChatServer) JoinConversation(stream chitty_chat.ChittyChat_JoinCo
 	return nil
 }
 
+/*
+* Broadcast a message to all clients that are connected (in `clients` map)
+*/
 func (s *chittyChatServer) broadcastMessage(msg *chitty_chat.Message) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
